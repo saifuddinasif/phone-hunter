@@ -20,9 +20,7 @@ phoneContainer.textContent = '';
 /* display ten phones only  */
 const showall =document.getElementById('showall')
 if(phones.length >10 && dataLimit ){
-
-  phones =phones.slice(0,10)
- 
+  phones =phones.slice(0,10);
  showall.classList.remove('d-none')
 
 }else{
@@ -56,11 +54,8 @@ phones.forEach(phone => {
   <h5 class="card-title">${phone.phone_name}</h5>
   <p class="card-text">This card has supporting text below as a natural lead-in to additional content.</p>
   <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
-<button  onclick="loadPhoneDetails('${phone.slug}')" class ='btn btn-primary'>show details <button>
-
-
+<button  onclick="loadPhoneDetails('${phone.slug}')" class ='btn btn-primary'  data-bs-toggle="modal" data-bs-target="#exampleModal">show details <button>
 </div>
-  
   `
   phoneContainer.appendChild(phoneDiv)
 
@@ -73,10 +68,8 @@ toggleSpinner(false)
 
 
 const processSearch = (dataLimit) => {
-
-
-  toggleSpinner(true);
-  const searchField = document.getElementById('search-field');
+toggleSpinner(true);
+const searchField = document.getElementById('search-field');
 const searchText = searchField.value;
 loadPhones(searchText,dataLimit)
 }
@@ -135,7 +128,28 @@ const loadPhoneDetails = async id => {
 
   const res = await fetch(url);
   const data = await res.json();
-  console.log(data.data)
+  displayPhoneDetails(data.data)
+}
+
+const displayPhoneDetails = phone => {
+const modalTitle = document.getElementById('exampleModalLabel')
+const modalimage = document.getElementById('modalimage');
+const phonedetails = document.getElementById('phone-details');
+
+phonedetails.innerHTML =`
+
+<p> Release Date: ${phone.releaseDate ? phone.releaseDate : "not found"} </p>
+
+`
+
+
+
+
+modalTitle.innerText = `${phone.name}`;
+modalimage.src =`${phone.image}`
+
+
+
 }
 
 loadPhones()
